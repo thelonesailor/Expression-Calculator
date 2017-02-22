@@ -1,17 +1,18 @@
-87900 0030-78- 56 abs+
-Aabs aabs divabs+ fgabsl;Ffdabss
-abc=>=<== 
-3--4 + -5 *7 div aT F 
-8 mod 9^2 55 ^ 009 
+87900 0030-78- 56 abs+ 67 -950
+Aabs aabs divabs+ fgabsl;Ffdabss abs  
+abc=>=<== 3<5
+3--4 4++9 -5 *7 div 6 div+ 7 aT F 
+8 mod 9^2 55 ^ 009 3- 2
+56 mod 12 34mod7 
 -0 ; <= 10--99
 abc)(abs(div;def)\\//
 F/\T\/T;/\\/ (F/\T)\/T
 ifthenelse
 if(3)then T+4 else
 notgh notT Fabc aFabc
->= 88 def> 99 > 0 not 5abc anc034 abs abs32 if ( 99 ;) then
+>= 88 <def> 99 > 0 not 5abc anc034 abs abs32 if ( 99 ;) then
  do this else foo! def haha ( 00 ) ; return T else
- return F ; T \/ F = T but T /\ F = F
- fdTabss
+return F ; T \/ F = T but T /\ F = F
+fdTabss
 1a  43a176b
 5div9 abs-3
