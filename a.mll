@@ -1,116 +1,68 @@
 {
 open Printf
 }
-let digit = ['0'-'9']
-let integer = ['+' '-']?(['1'-'9'] ['0'-'9']*|"0")
-let id = ['a'-'z'] ['a'-'z' '0'-'9']*
-let add = '+'
-let sub = '-'
-let mul = '*'
-let divide = "div"
-let modulo = "mod"
-let id = ['a'-'z']['a'-'z''A'-'Z''0'-'9']
+
+let integer = ['+' '-']?(['1'-'9']['0'-'9']*|"0")
+let identifier = ['a'-'z']['a'-'z' 'A'-'Z' '0'-'9']*
+
 rule toy_lang = parse
 
-| integer as inum
-{ printf "integer: %s (%d)\n" inum (int_of_string inum);
-toy_lang lexbuf
-}
 
-| "abs" as absolute
-{ printf "Unary arithmetic operator: %s\n" absolute;
-toy_lang lexbuf
-}
+| integer as numeral	{ printf " integer(%s) " numeral ; toy_lang lexbuf}
 
 
-| "+"
-| "-"
-| "*"
-| "div"
-| "^"	
-| "mod" as op
-{ printf "binary operator: %s\n" op;
-toy_lang lexbuf
-}
-
-| '('
-| ')' as parenthesis
-{ printf "parenthesis: %c\n" parenthesis;
-toy_lang lexbuf
-}
-
-| 'T'
-| 'F' as bool
-{ printf "boolean constant: %c\n" bool;
-toy_lang lexbuf
-}
-
-| "not"  as negation
-{
-printf "Unary boolean operation: %s\n" negation;
-toy_lang lexbuf
-}
-
-| "\\/" 
-{ printf "or  ";
-toy_lang lexbuf
-}
-
-| "/\\"
-{ printf "and  ";
-toy_lang lexbuf
-}
-
-| id as text
-{ printf "identifier: %s " text;
-toy_lang lexbuf
-}
-
-| '='
-| '>'
-| '<'
-| ">="
-| "<=" as text 
-{ printf "Comparison_op: %s " text;
-toy_lang lexbuf
-}
-
-| "if"
-| "then" 
-| "else" as text 
-{ printf "Conditional_op: %s " text;
-toy_lang lexbuf
-}
-
-
-| id as identifier
-{ printf "Identifier: %s " identifier;
-toy_lang lexbuf
-}
+| '+'		{ printf " addition(+) " ; toy_lang lexbuf}
+| '-'		{ printf " subtraction(-) " ; toy_lang lexbuf}
+| '*'		{ printf " multiplication(*) " ; toy_lang lexbuf}
+| "div"		{ printf " division(div) " ; toy_lang lexbuf}
+| '^'		{ printf " exponentiation(^) " ; toy_lang lexbuf}
+| "mod" 	{ printf " modulo(mod) " ; toy_lang lexbuf}
 
 
 
-| "def" as definition
-{ printf "definition construct: %s " definition;
-toy_lang lexbuf
-}
-
-| ";" as delimiter
-{ printf "Delimiter: %c " delimiter ;
-toy_lang lexbuf
-}
+| '('		{ printf " open_parenthesis " ; toy_lang lexbuf}
+| ')' 		{ printf " close_parenthesis " ; toy_lang lexbuf}
 
 
-| [' ''\t''\n']+ 
-{ 
-	toy_lang lexbuf 
-} 
+| 'T'		{ printf " boolean_true " ; toy_lang lexbuf}
+| 'F' 		{ printf " boolean_false " ; toy_lang lexbuf}
 
-| _ as c
-{ printf "Unrecognized character: %c\n" c;
-toy_lang lexbuf
-}
+
+| "not"  	{ printf " boolean_negation(not) " ; toy_lang lexbuf}
+| "abs" 	{ printf " absolute(abs) " ; toy_lang lexbuf}
+
+
+| "\\/" 	{ printf " boolean_or " ; toy_lang lexbuf}
+| "/\\"		{ printf " boolean_and " ; toy_lang lexbuf}
+
+
+| identifier as text	{ printf " identifier(%s) " text; toy_lang lexbuf}
+
+
+| '='		{ printf " equal " ; toy_lang lexbuf}
+| '>'		{ printf " greater_than " ; toy_lang lexbuf}
+| '<'		{ printf " less_than " ; toy_lang lexbuf}
+| ">="		{ printf " greater_or_equal " ; toy_lang lexbuf}
+| "<="		{ printf " less_or_equal " ; toy_lang lexbuf} 
+
+
+| "if"		{ printf " conditional_if " ; toy_lang lexbuf}
+| "then" 	{ printf " conditional_then " ; toy_lang lexbuf}
+| "else" 	{ printf " conditional_else " ; toy_lang lexbuf}
+
+| "def" 	{ printf " definition_construct(def) " ; toy_lang lexbuf}
+| ";" 		{ printf " delimiter(;) " ; toy_lang lexbuf}
+
+
+
+| [' ''\t']+ { toy_lang lexbuf}
+| '\n' 		 { printf "\n" ; toy_lang lexbuf}
+
+
 | eof { }
+
+| [^' ''\t''\n'';''+''-''*''('')']+ as invalid 	{ printf " Invalid_token(%s) " invalid;toy_lang lexbuf}
+
 {
 let main () =
 let cin =
