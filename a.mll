@@ -2,7 +2,7 @@
 open Printf
 }
 
-let integer = ['+' '-']?(['1'-'9']['0'-'9']*|"0")
+let integer = ['-']?(['1'-'9']['0'-'9']*|"0")
 let identifier = ['a'-'z']['a'-'z' 'A'-'Z' '0'-'9']*
 
 
@@ -26,15 +26,15 @@ rule scanner = parse
 | ')' 		{ printf " close_parenthesis " ; scanner lexbuf}
 
 
-| 'T'		{ printf " boolean_True " ; scanner lexbuf}
-| 'F' 		{ printf " boolean_False " ; scanner lexbuf}
+| 'T'		{ printf " boolean_True(T) " ; scanner lexbuf}
+| 'F' 		{ printf " boolean_False(F) " ; scanner lexbuf}
 
 
 | "not"  	{ printf " boolean_negation(not) " ; scanner lexbuf}
 
 
-| "\\/" 	{ printf " boolean_or " ; scanner lexbuf}
-| "/\\"		{ printf " boolean_and " ; scanner lexbuf}
+| "\\/" 	{ printf " boolean_OR(/\\) " ; scanner lexbuf}
+| "/\\"		{ printf " boolean_AND(\\/) " ; scanner lexbuf}
 
 
 
@@ -56,14 +56,14 @@ rule scanner = parse
 
 
 | [' ''\t']+ { scanner lexbuf}
-| '\n' 		 { printf "\n" ; scanner lexbuf}
+| '\n' 		 { printf "\n\n" ; scanner lexbuf}
 
-
-| eof {}
 
 (*let delimiter = ("+"|"-"|"*"|"div"|"^"|"mod"|"("|")"|"\\/"|"/\\"|"="|">"|"<"|">="|"<="|""|";")*)
 
-| [^' ''\t''\n' '+' '-' '*' '^' '(' ')' '=' '>' '<' ';']+ as invalid 	{ printf " Invalid_token(%s) " invalid;scanner lexbuf}
+| [^' ''\t''\n' '+' '-' '*' '^' '(' ')' '=' '>' '<' ';' 'F' 'T']+ as invalid 	{ printf " Invalid_token(%s) " invalid;scanner lexbuf}
+
+| eof {}
 
 {
 let main () =
