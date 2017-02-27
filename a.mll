@@ -65,6 +65,8 @@ rule scanner = parse
 
 | eof {}
 
+(*
+In a different file now 
 {
 let main () =
 let cin =
@@ -76,3 +78,4 @@ let lexbuf = Lexing.from_channel cin in
 scanner lexbuf
 let _ = Printexc.print main ()
 }
+*)
