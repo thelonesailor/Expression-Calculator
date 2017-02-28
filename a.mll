@@ -1,5 +1,6 @@
 {
 open Printf
+open B
 }
 
 let integer = ['-']?(['1'-'9']['0'-'9']*|"0")
@@ -14,56 +15,55 @@ rule scanner = parse
 | "abs" 	{ printf " absolute(abs) " ; scanner lexbuf}
 
 
-| '+'		{ printf " addition(+) " ; scanner lexbuf}
-| '-'		{ printf " subtraction(-) " ; scanner lexbuf}
-| '*'		{ printf " multiplication(*) " ; scanner lexbuf}
-| "div"		{ printf " division(div) " ; scanner lexbuf}
-| '^'		{ printf " exponentiation(^) " ; scanner lexbuf}
-| "mod" 	{ printf " modulo(mod) " ; scanner lexbuf}
+| '+'		{ ADD }
+| '-'		{ SUBT }
+| '*'		{ MULT }
+| "div"		{ DIV }
+| '^'		{ EXPO }
+| "mod" 	{ MOD }
 
 
-| '('		{ printf " open_parenthesis " ; scanner lexbuf}
-| ')' 		{ printf " close_parenthesis " ; scanner lexbuf}
+| '('		{ OPEN_PAREN }
+| ')' 		{ CLOSE_PAREN }
 
 
-| 'T'		{ printf " boolean_True(T) " ; scanner lexbuf}
-| 'F' 		{ printf " boolean_False(F) " ; scanner lexbuf}
+| 'T'		{ TRUE }
+| 'F' 		{ FALSE }
 
 
-| "not"  	{ printf " boolean_negation(not) " ; scanner lexbuf}
+| "not"  	{ NOT }
 
 
-| "\\/" 	{ printf " boolean_OR(/\\) " ; scanner lexbuf}
-| "/\\"		{ printf " boolean_AND(\\/) " ; scanner lexbuf}
+| "\\/" 	{ OR }
+| "/\\"		{ AND }
 
 
 
-| '='		{ printf " equal(=) " ; scanner lexbuf}
-| '>'		{ printf " greater_than(>) " ; scanner lexbuf}
-| '<'		{ printf " less_than(<) " ; scanner lexbuf}
-| ">="		{ printf " greater_or_equal(>=) " ; scanner lexbuf}
-| "<="		{ printf " less_or_equal(<=) " ; scanner lexbuf} 
+| '='		{ EQUAL }
+| '>'		{ GREATER_THAN }
+| '<'		{ LESS_THAN }
+| ">="		{ GREATER_OR_EQUAL }
+| "<="		{ LESS_OR_EQUAL } 
 
 
-| "if"		{ printf " conditional(if) " ; scanner lexbuf}
-| "then" 	{ printf " conditional(then) " ; scanner lexbuf}
-| "else" 	{ printf " conditional(else) " ; scanner lexbuf}
+| "if"		{ IF }
+| "then" 	{ THEN }
+| "else" 	{ ELSE }
 
-| "def" 	{ printf " definition_construct(def) " ; scanner lexbuf}
-| ";" 		{ printf " delimiter(;) " ; scanner lexbuf}
+| "def" 	{ DEF }
+| ";" 		{ SEMICOLON }
 
 | identifier as text	{ printf " identifier(%s) " text; scanner lexbuf}
 
 
-| [' ''\t']+ { scanner lexbuf}
-| '\n' 		 { printf "\n\n" ; scanner lexbuf}
+| [' ''\t''\n']+ { scanner lexbuf}
 
 
 (*let delimiter = ("+"|"-"|"*"|"div"|"^"|"mod"|"("|")"|"\\/"|"/\\"|"="|">"|"<"|">="|"<="|""|";")*)
 
 | [^' ''\t''\n' '+' '-' '*' '^' '(' ')' '=' '>' '<' ';' 'F' 'T']+ as invalid 	{ printf " Invalid_token(%s) " invalid;scanner lexbuf}
 
-| eof {}
+| eof { EOF }
 
 (*
 In a different file now 
