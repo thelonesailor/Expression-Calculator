@@ -27,8 +27,8 @@ rule scanner = parse
 | ')' 		{ CLOSE_PAREN }
 
 
-| 'T'		{ TRUE }
-| 'F' 		{ FALSE }
+| 'T'		{ BCONST(true) }
+| 'F' 		{ BCONST(false) }
 
 
 | "not"  	{ NOT }
