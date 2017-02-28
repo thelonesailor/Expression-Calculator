@@ -8,8 +8,7 @@ open Printf
 %token TRUE FALSE NOT OR AND
 %token EQUAL GREATER_THAN LESS_THAN GREATER_OR_EQUAL LESS_OR_EQUAL
 %token IF THEN ELSE DEF SEMICOLON
-%token PLUS MINUS MULTIPLY DIVIDE CARET UMINUS
-%token NEWLINE EOF
+%token EOF
 %start input
 %type <unit> input
 %%
@@ -17,7 +16,7 @@ input:  { }
 | input line { }
 ;
 
-line: NEWLINE { }
+line: SEMICOLON { }
 | iexp SEMICOLON { printf " %d\n" $1; flush stdout }
 ;
 iexp: term 			{ $1 }
@@ -30,7 +29,8 @@ term:factor			{ $1 }
 | term MOD factor 	{ $1 mod $3 }
 ;
 factor: NUM 					{ $1 }
-| MINUS factor 					{ -1 * $2 }
+| SUBT factor 					{ -1 * $2 }
+| ABS term						{ abs($2) }
 | OPEN_PAREN iexp CLOSE_PAREN 	{ $2 }	
 ;
 %%

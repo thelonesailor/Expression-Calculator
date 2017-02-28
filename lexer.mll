@@ -3,14 +3,14 @@ open Parser
 open Printf
 }
 
-let integer = ['-']?(['1'-'9']['0'-'9']*|"0")
+let integer = (['1'-'9']['0'-'9']*|"0")
 let identifier = ['a'-'z']['a'-'z' 'A'-'Z' '0'-'9']*
 
 
 rule scanner = parse
 
 
-| integer as numeral	{ printf " integer(%s) " numeral ; scanner lexbuf}
+| integer as numeral	{ NUM ( int_of_string numeral ) }
 
 | "abs" 	{ ABS }
 
