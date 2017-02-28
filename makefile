@@ -1,12 +1,13 @@
 test:
-	ocamlyacc b.mly
-	ocamlc -c b.mli	
-	ocamllex a.mll
-	ocamlc -c a.ml
-	ocamlc -c b.ml
+	ocamllex lexer.mll
+	ocamlyacc parser.mly
+	ocamlc -c parser.mli
+	ocamlc -c lexer.ml
+	ocamlc -c parser.ml
 	ocamlc -c main.ml
-	ocamlc -o calc a.cmo b.cmo main.cmo
-clean:
-	rm a.cmi a.cmo a.ml a.out 
-	rm b.cmi b.cmo b.ml b.mli 
+	ocamlc -o calculator lexer.cmo parser.cmo main.cmo
+clean:	
+	rm lexer.cmi lexer.cmo lexer.ml  
+	rm parser.cmi parser.cmo parser.ml parser.mli 
+	rm main.cmi main.cmo calculator
 

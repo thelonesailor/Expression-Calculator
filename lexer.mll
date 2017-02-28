@@ -1,6 +1,6 @@
 {
+open Parser	
 open Printf
-open B
 }
 
 let integer = ['-']?(['1'-'9']['0'-'9']*|"0")
@@ -12,7 +12,7 @@ rule scanner = parse
 
 | integer as numeral	{ printf " integer(%s) " numeral ; scanner lexbuf}
 
-| "abs" 	{ printf " absolute(abs) " ; scanner lexbuf}
+| "abs" 	{ ABS }
 
 
 | '+'		{ ADD }
