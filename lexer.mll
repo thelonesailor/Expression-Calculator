@@ -3,8 +3,9 @@ open Parser
 open Printf
 }
 
-let integer = (['1'-'9']['0'-'9']*|"0")
-let identifier = ['a'-'z']['a'-'z' 'A'-'Z' '0'-'9']*
+let integer = (['1'-'9']['0'-'9']*|"0") 
+(*sign of an integer?*)
+let variable = ['A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_' ''']*
 
 
 rule scanner = parse
@@ -13,47 +14,39 @@ rule scanner = parse
 | integer as numeral	{ NUM ( int_of_string numeral ) }
 
 | "abs" 	{ ABS }
-
+| '~'		{ UNMINUS }
 
 | '+'		{ ADD }
 | '-'		{ SUBT }
 | '*'		{ MULT }
 | "div"		{ DIV }
-| '^'		{ EXPO }
 | "mod" 	{ MOD }
+
+| '='		{ EQ }
+| '>'		{ GT }
+| '<'		{ LT }
+| ">="		{ GE }
+| "<="		{ LE } 
+
 
 
 | '('		{ OPEN_PAREN }
 | ')' 		{ CLOSE_PAREN }
+| ";" 		{ SEMICOLON }
+
 
 
 | 'T'		{ BCONST(true) }
 | 'F' 		{ BCONST(false) }
 
-
 | "not"  	{ NOT }
-
 
 | "\\/" 	{ OR }
 | "/\\"		{ AND }
 
 
-
-| '='		{ EQUAL }
-| '>'		{ GREATER_THAN }
-| '<'		{ LESS_THAN }
-| ">="		{ GREATER_OR_EQUAL }
-| "<="		{ LESS_OR_EQUAL } 
-
-
-| "if"		{ IF }
-| "then" 	{ THEN }
-| "else" 	{ ELSE }
-
-| "def" 	{ DEF }
-| ";" 		{ SEMICOLON }
-
-| identifier as text	{ printf " identifier(%s) " text; scanner lexbuf}
+| "let" 	{ LET }
+| variable as text	{ VARIABLE(text) }
 
 
 | [' ''\t''\n']+ { scanner lexbuf}
@@ -61,21 +54,6 @@ rule scanner = parse
 
 (*let delimiter = ("+"|"-"|"*"|"div"|"^"|"mod"|"("|")"|"\\/"|"/\\"|"="|">"|"<"|">="|"<="|""|";")*)
 
-| [^' ''\t''\n' '+' '-' '*' '^' '(' ')' '=' '>' '<' ';' 'F' 'T']+ as invalid 	{ printf " Invalid_token(%s) " invalid;scanner lexbuf}
+| [^' ''\t''\n' '+' '-' '~' '*' '^' '(' ')' '=' '>' '<' ';' 'F' 'T']+ as invalid 	{ printf " Invalid_token(%s) " invalid;scanner lexbuf}
 
 | eof { EOF }
-
-(*
-In a different file now 
-{
-let main () =
-let cin =
-if Array.length Sys.argv > 1
-then open_in Sys.argv.(1)
-else stdin
-in
-let lexbuf = Lexing.from_channel cin in
-scanner lexbuf
-let _ = Printexc.print main ()
-}
-*)
