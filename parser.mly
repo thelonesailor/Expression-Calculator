@@ -13,9 +13,9 @@ open Util
 %left EQ 
 %left GT LT GE LE
 %left ADD SUBT 
-%right MULT DIV MOD
+%left MULT DIV MOD
 %right ABS UNMINUS
-%left NOT
+%right NOT
 %token SEMICOLON EOF
 %start input
 %type <unit> input
@@ -25,8 +25,8 @@ input:  { exit(0); }
 ;
 
 line: SEMICOLON { }
-| iexp SEMICOLON { printf "\t"; iprint ($1) ; printf "\n\t intexp= %d\n\n" (eval $1 (getvars $1) (rev(askvars (getvars $1) [] ))) ; flush stdout }
-| bexp SEMICOLON { printf "\t"; bprint ($1) ; printf "\n\t boolexp= %b\n\n" (eval2 $1 (bgetvars $1) (rev(askvars (bgetvars $1) [] ))) ;flush stdout }
+| iexp SEMICOLON { printf "\nParse tree:- "; iprint ($1) ; printf "\n\n"; printf "\n\t intexp= %d\n\n" (eval $1 (getvars $1) (rev(askvars (getvars $1) [] ))) ; flush stdout }
+| bexp SEMICOLON { printf "\nParse tree:- "; bprint ($1) ; printf "\n\n"; printf "\n\t boolexp= %b\n\n" (eval2 $1 (bgetvars $1) (rev(askvars (bgetvars $1) [] ))) ; flush stdout }
 ;
 
 

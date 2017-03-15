@@ -37,8 +37,8 @@ rule scanner = parse
 
 
 
-| 'T'		{ BCONST(true) }
-| 'F' 		{ BCONST(false) }
+| 't'		{ BCONST(true) }
+| 'f' 		{ BCONST(false) }
 
 | "not"  	{ NOT }
 
@@ -54,6 +54,6 @@ rule scanner = parse
 
 (*let delimiter = ("+"|"-"|"*"|"div"|"^"|"mod"|"("|")"|"\\/"|"/\\"|"="|">"|"<"|">="|"<="|""|";")*)
 
-| [^' ''\t''\n' '+' '-' '~' '*' '^' '(' ')' '=' '>' '<' ';' 'F' 'T']+ as invalid 	{ printf " Invalid_token(%s) " invalid;scanner lexbuf}
+| [^' ''\t''\n' '+' '-' '~' '*' '(' ')' '=' '>' '<' ';' 'f' 't']+ as invalid 	{ printf " Invalid_token(%s) " invalid;scanner lexbuf}
 
 | eof { EOF }

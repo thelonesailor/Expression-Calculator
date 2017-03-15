@@ -64,7 +64,7 @@ let rec bgetvars tree = match tree with
 
 let rec askvars l acc= match l with
 	[] -> Printf.printf "";acc;
-	|x::y -> Printf.printf "\nEnter %s= " x; let vx=read_int () in askvars y (vx::acc) ;
+	|x::y -> Printf.printf "Enter the value of \"%s\": " x; let vx=read_int () in askvars y (vx::acc) ;
 ;;
 
 let rec ieval t rho l1 l2 = match t with 
