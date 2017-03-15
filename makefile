@@ -12,5 +12,5 @@ test:
 	rm main.cmi main.cmo
 	rm util.cmi util.cmo
 clean:	
-	rm calc
+	rm calc *.output
 

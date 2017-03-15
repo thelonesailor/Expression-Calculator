@@ -13,14 +13,15 @@ rule scanner = parse
 
 | integer as numeral	{ NUM ( int_of_string numeral ) }
 
-| "abs" 	{ ABS }
-| '~'		{ UNMINUS }
 
 | '+'		{ ADD }
 | '-'		{ SUBT }
 | '*'		{ MULT }
 | "div"		{ DIV }
 | "mod" 	{ MOD }
+
+| "abs" 	{ ABS }
+| '~'		{ UNMINUS }
 
 | '='		{ EQ }
 | '>'		{ GT }
@@ -45,7 +46,6 @@ rule scanner = parse
 | "/\\"		{ AND }
 
 
-| "let" 	{ LET }
 | variable as text	{ VARIABLE(text) }
 
 

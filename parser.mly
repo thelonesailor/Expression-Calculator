@@ -6,55 +6,59 @@ open Util
 %token <int> NUM
 %token <bool> BCONST
 %token <string> VARIABLE
-%token ADD SUBT MULT DIV MOD
-%token OPEN_PAREN CLOSE_PAREN ABS UNMINUS
-%token NOT OR AND LET
-%token EQ GT LT GE LE
-%token SEMICOLON
-%token EOF
+%token OPEN_PAREN CLOSE_PAREN 
+%token ADD SUBT MULT DIV MOD ABS UNMINUS OR AND NOT EQ GT LT GE LE
+%left OR
+%left AND
+%left EQ 
+%left GT LT GE LE
+%left ADD SUBT 
+%right MULT DIV MOD
+%right ABS UNMINUS
+%left NOT
+%token SEMICOLON EOF
 %start input
 %type <unit> input
 %%
-input:  { }
+input:  { exit(0); }
 | line input { }
 ;
 
 line: SEMICOLON { }
-| iexp SEMICOLON { printf "\t"; iprint ($1) ; printf "\n\t %d\n" (eval $1 (getvars $1) (rev(askvars (getvars $1) [] ))) ; flush stdout }
-| bexp SEMICOLON { printf "\t"; bprint ($1) ; printf "\n\t %b\n" (eval2 $1 (bgetvars $1) (rev(askvars (bgetvars $1) [] ))) ;flush stdout }
+| iexp SEMICOLON { printf "\t"; iprint ($1) ; printf "\n\t intexp= %d\n\n" (eval $1 (getvars $1) (rev(askvars (getvars $1) [] ))) ; flush stdout }
+| bexp SEMICOLON { printf "\t"; bprint ($1) ; printf "\n\t boolexp= %b\n\n" (eval2 $1 (bgetvars $1) (rev(askvars (bgetvars $1) [] ))) ;flush stdout }
 ;
 
 
-iexp: term 			{ $1 }
-| iexp ADD term 	{ Add($1,$3) }
-| iexp SUBT term 	{ Subt($1,$3) }
-;
-term:factor			{ $1 }
-| term MULT factor 	{ Mult($1,$3) }
-| term DIV factor 	{ Div($1,$3) }
-| term MOD factor 	{ Modd($1,$3) }
-;
-factor: NUM 					{ Ival($1) }
-| VARIABLE						{ Var($1) }
-| UNMINUS factor				{ Unminus($2) }
-| ABS factor					{ Abs($2) }
+iexp: 
+  iexp ADD iexp 	{ Add($1,$3) }
+| iexp SUBT iexp 	{ Subt($1,$3) }
+| iexp MULT iexp 	{ Mult($1,$3) }
+| iexp DIV iexp 	{ Div($1,$3) }
+| iexp MOD iexp 	{ Modd($1,$3) }
+
+| ABS iexp			{ Abs($2) }
+| UNMINUS iexp		{ Unminus($2) }
+
+| NUM 				{ Ival($1) }
+| VARIABLE	 		{ Var($1) }
 | OPEN_PAREN iexp CLOSE_PAREN 	{ $2 }	
 ;
 
 
-bexp: bterm 			{ $1 }
-| bexp OR bterm			{ Or($1,$3) }
-;
-bterm: bfactor			{ $1 }
-| bterm AND bfactor     { And($1,$3) }
-;
-bfactor: BCONST					{ Bval($1) }
-| NOT bfactor					{ Not($2) }
-| OPEN_PAREN bexp CLOSE_PAREN 	{ $2 }	
+bexp: 
+  bexp OR bexp					{ Or($1,$3) }
+| bexp AND bexp   	  			{ And($1,$3) }
+| BCONST						{ Bval($1) }
+| NOT bexp						{ Not($2) }
 | iexp EQ iexp					{ Equal($1,$3) }
 | iexp LT iexp					{ Lt($1,$3) }
 | iexp GT iexp					{ Gt($1,$3) }
 | iexp LE iexp					{ Le($1,$3) }
 | iexp GE iexp					{ Ge($1,$3) }
+| OPEN_PAREN bexp CLOSE_PAREN 	{ $2 }	
 ;
 %%
+(*
+http://ee.hawaii.edu/~tep/EE160/Book/chap5/subsection2.1.4.1.html
+*)
